@@ -1,0 +1,25 @@
+class Solution {
+    public void rotate(int[][] arr) {
+        int n= arr.length;
+        for(int i=0;i<arr.length;i++){
+            for(int j=i;j<arr.length;j++){
+                int temp=arr[i][j];
+                arr[i][j]=arr[j][i];
+                arr[j][i]=temp;
+            }
+        }
+        for(int i=0;i<n;i++){
+            reverseRow(arr[i]);
+        }
+    }
+        private void reverseRow(int[] row){
+            int left=0,right=row.length-1;
+            while(left<right){
+                int temp=row[left];
+                row[left]=row[right];
+                row[right]=temp;
+                left++;
+                right--;
+            }
+        }
+    }
