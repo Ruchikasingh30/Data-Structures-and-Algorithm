@@ -14,7 +14,7 @@ class Solution {
         ListNode current = head;
         
         while (current != null) {
-            result = result * 2 + current.val;
+            result = result*2 + current.val;
             current = current.next;
         }
         
