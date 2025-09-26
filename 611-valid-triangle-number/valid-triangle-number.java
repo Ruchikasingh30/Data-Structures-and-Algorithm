@@ -9,6 +9,7 @@ class Solution {
                 for(int k=j+1; k<n; k++){
                     int  a= arr[i], b=arr[j], c=arr[k];
                     if(a+b>c) count++;
+                    else break;
                 }
             }
         }
