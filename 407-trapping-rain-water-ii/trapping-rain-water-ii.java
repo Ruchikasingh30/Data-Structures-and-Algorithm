@@ -1,37 +1,60 @@
 class Solution {
     public int trapRainWater(int[][] heightMap) {
-    int m = heightMap.length, n = heightMap[0].length;
-    if (m < 3 || n < 3) return 0;
+        int m = heightMap.length;
+        int n = heightMap[0].length;
+        int[][] vols = new int[m][n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                vols[i][j] = heightMap[i][j];
 
-    boolean[][] visited = new boolean[m][n];
-    PriorityQueue<int[]> heap = new PriorityQueue<>(java.util.Comparator.comparingInt(cell -> cell[2]));
-
-    for (int i = 0; i < m; ++i) {
-        heap.offer(new int[]{i, 0, heightMap[i][0]});
-        heap.offer(new int[]{i, n - 1, heightMap[i][n - 1]});
-        visited[i][0] = visited[i][n - 1] = true;
-    }
-    for (int j = 0; j < n; ++j) {
-        heap.offer(new int[]{0, j, heightMap[0][j]});
-        heap.offer(new int[]{m - 1, j, heightMap[m - 1][j]});
-        visited[0][j] = visited[m - 1][j] = true;
-    }
-
-    int res = 0, level = Integer.MIN_VALUE;
-    int[][] dirs = {{0,1},{0,-1},{1,0},{-1,0}};
-    while (!heap.isEmpty()) {
-        int[] cell = heap.poll();
-        int r = cell[0], c = cell[1], h = cell[2];
-        level = Math.max(level, h);
-        for (int[] dir : dirs) {
-            int nr = r + dir[0], nc = c + dir[1];
-            if (nr >= 0 && nc >= 0 && nr < m && nc < n && !visited[nr][nc]) {
-                visited[nr][nc] = true;
-                res += Math.max(0, level - heightMap[nr][nc]);
-                heap.offer(new int[]{nr, nc, heightMap[nr][nc]});
             }
+
         }
-    }
-    return res;
+         boolean upt = true;
+         boolean init = true;
+
+          
+         while (upt) {
+             upt = false;
+               for (int i = 1; i < m - 1; i++) { 
+                for (int j = 1; j < n - 1; j++) {
+                    int val = Math.max(heightMap[i][j],
+                             Math.min(vols[i - 1][j], vols[i][j - 1]));
+                    if (init || vols[i][j] > val) {
+                        vols[i][j] = val;
+                        upt = true;
+
+                    }         
+
+                }
+
+
+               }
+                init = false;
+                 for (int i = m - 2; i >= 1; i--) { 
+                     for (int j = n - 2; j >= 1; j--) { 
+                        int val = Math.max(heightMap[i][j],
+                                  Math.min(vols[i + 1][j], vols[i][j + 1]));
+                         if (vols[i][j] > val) {
+                              vols[i][j] = val;
+                              upt = true;
+
+                         }
+
+                     }
+
+                 }
+
+         } 
+          int res = 0;
+          for (int i = 1; i < m - 1; i++) { 
+             for (int j = 1; j < n - 1; j++) { 
+                if (vols[i][j] > heightMap[i][j])
+                 res += vols[i][j] - heightMap[i][j];
+
+             }
+
+          }
+         return res;
     }
 }
