@@ -1,26 +1,22 @@
-import java.util.*;
-
 class Solution {
-    public boolean checkAnagram(String s1, String s2) {
-        if (s1.length() != s2.length()) return false;
-
-        char[] a = s1.toCharArray();
-        char[] b = s2.toCharArray();
-        Arrays.sort(a);
-        Arrays.sort(b);
-        return Arrays.equals(a, b);
-    }
-
+    static String sortString(String s) {
+    char[] arr = s.toCharArray();
+    Arrays.sort(arr);
+    return new String(arr);
+}
+//given function
     public List<String> removeAnagrams(String[] words) {
-        List<String> res = new ArrayList<>(Arrays.asList(words)); 
-        int i = 1;
-        while (i < res.size()) {
-            if (checkAnagram(res.get(i - 1), res.get(i))) {
-                res.remove(i);  
-            } else {
-                i++;
-            }
+    String prev="";
+    List<String>ans=new ArrayList<>();
+    for(int i=0;i<words.length;i++)
+    {
+        String str=sortString(words[i]);
+        if(!str.equals(prev))
+        {
+            prev=str;
+            ans.add(words[i]);
         }
-        return res;
+    }
+    return ans;
     }
 }
