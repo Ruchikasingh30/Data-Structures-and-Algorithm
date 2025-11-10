@@ -1,17 +1,16 @@
 class Solution {
     public int minOperations(int[] nums) {
-        int ans = 0;
-        Deque<Integer> stack = new ArrayDeque<>();
-        stack.push(0);
-        for (int num : nums) {
-            while (!stack.isEmpty() && stack.peek() > num) {
-                stack.pop();
-            }
-            if (stack.isEmpty() || stack.peek() < num) {
+        var stack = new int[nums.length + 1];
+        var top = 0;
+        var ans = 0;
+        for (var i = 0; i < nums.length; i++) {
+            while (stack[top] > nums[i]) {
+                top--;
                 ans++;
-                stack.push(num);
             }
+            if (stack[top] != nums[i])
+                stack[++top] = nums[i];
         }
-        return ans;
+        return ans + top;
     }
 }
