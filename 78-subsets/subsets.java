@@ -1,17 +1,22 @@
 class Solution {
     public List<List<Integer>> subsets(int[] nums) {
-        List<List<Integer>> list = new ArrayList<>();
-        Arrays.sort(nums);
-        backtrack(list, new ArrayList<>(), nums, 0);
-        return list;
+        List<List<Integer>> res = new ArrayList<>();
+        List<Integer> subset = new ArrayList<>();
+
+        createSubset(nums, 0, res, subset);
+        return res;        
     }
 
-    private void backtrack(List<List<Integer>> list , List<Integer> tempList, int [] nums, int start){
-        list.add(new ArrayList<>(tempList));
-        for(int i = start; i < nums.length; i++){
-            tempList.add(nums[i]);
-            backtrack(list, tempList, nums, i + 1);
-            tempList.remove(tempList.size() - 1);
+    private void createSubset(int[] nums, int index, List<List<Integer>> res, List<Integer> subset) {
+        if (index == nums.length) {
+            res.add(new ArrayList<>(subset));
+            return;
         }
-    }
+
+        subset.add(nums[index]);
+        createSubset(nums, index + 1, res, subset);
+
+        subset.remove(subset.size() - 1);
+        createSubset(nums, index + 1, res, subset);
+    }    
 }
